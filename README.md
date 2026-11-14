@@ -6,7 +6,6 @@ Portable pi extensions and skills for a new machine.
 
 ```text
 extensions/
-  exit-command.ts     /exit alias for /quit
   pi-bg-jobs/         one-shot background jobs (bg_start, bg_status, bg_output, bg_kill, bg_wait)
   pi-listen/          continuous listeners (listen_start, listen_status, listen_output, listen_stop)
 skills/
