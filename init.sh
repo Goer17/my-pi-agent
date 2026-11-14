@@ -12,7 +12,7 @@ MODE="copy"
 
 usage() {
   cat <<'EOF'
-Usage: ./init.sh [--copy]
+Usage: ./init.sh [--link|--copy]
 
 Install the extensions and skills in this repository into the pi agent dir.
 
