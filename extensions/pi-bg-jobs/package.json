@@ -1,0 +1,12 @@
+{
+	"name": "pi-bg-jobs",
+	"version": "0.3.0",
+	"description": "One-shot background jobs for the pi coding agent: run a process in the background and get its output delivered as a user message when it exits.",
+	"type": "module",
+	"pi": {
+		"extensions": ["./index.ts"]
+	},
+	"files": ["index.ts", "README.md"],
+	"keywords": ["pi", "pi-extension", "background", "jobs"],
+	"license": "MIT"
+}

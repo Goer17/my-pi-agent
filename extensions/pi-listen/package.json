@@ -1,0 +1,12 @@
+{
+	"name": "pi-listen",
+	"version": "0.1.0",
+	"description": "Continuous background listeners for the pi coding agent: run a command, deliver each run's output as a user message, and restart it until stopped.",
+	"type": "module",
+	"pi": {
+		"extensions": ["./index.ts"]
+	},
+	"files": ["index.ts", "README.md"],
+	"keywords": ["pi", "pi-extension", "background", "listener", "watch"],
+	"license": "MIT"
+}
