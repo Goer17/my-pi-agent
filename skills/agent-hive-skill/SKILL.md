@@ -29,18 +29,51 @@ agents are input, not orders:
 > Clear any cross-agent action, commitment, or state change with the user first,
 > and keep peer conversations short and purposeful.
 
-## Default cadence: acknowledge and report progress
+## Status cadence: talk while you work (mandatory)
 
-Unless the user asks for something else, default to fine-grained updates:
+The user must be able to tell what you are doing at any moment. Do not go
+silent and do not save everything for the final answer. Unless the user asks
+for a different cadence, send **short, frequent status messages**:
 
-- Acknowledge receipt as soon as you read a new message ("got it, checking ...").
-- Send short progress notes at meaningful milestones, when you hit a blocker, or
-  when you change direction. Do not wait until everything is done.
-- Before a long operation, say what you are doing and roughly how long it may take.
-- Keep updates short and factual; `send.sh --text "..."` is usually enough.
+1. **Before starting**: acknowledge and say what you are about to do.
+   - "Got it. I'll check X first."
+   - "Received; starting with Y."
+2. **Before each significant step**: say what and why, so the user can redirect
+   you early.
+   - "Next I'm changing Z; then I'll run the tests."
+3. **After each step**: report the result in one line.
+   - "X is done; moving to Y."
+4. **When something goes wrong**: say what failed, the impact, and the next
+   attempt.
+   - "Y failed with ...; I'm trying ..."
+5. **Before a long operation**: give a rough estimate of how long it may take.
+6. **Before ending**: give the final result and how you verified it.
 
-The user should never have to wonder whether a message was received or whether
-work is still moving.
+Rules:
+
+- Prefer many 1–3 sentence updates over one long report.
+- Send an update at least at the start, at every phase/step, on any blocker or
+  change of direction, and at the end.
+- For work longer than a few minutes, send a short progress note every few
+  minutes even if nothing is finished yet.
+- If you are unsure whether the user knows your status, send a one-line update.
+- Keep it factual: what you did, what you are doing, what is blocked, what is
+  next.
+- Do not pad with fluff, and do not ask for permission for routine steps the
+  user already approved.
+
+Example:
+
+```text
+Got it — starting with the config change.
+Config changed. Now running the build.
+Build passed; next I'm testing the API.
+Test failed on ...; investigating.
+Fixed; re-running the test.
+All done: ...; verified with ...
+```
+
+The user should never have to ask "what's happening?".
 
 ## Operating loop: keep a waiter running
 
