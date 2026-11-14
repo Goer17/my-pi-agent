@@ -8,7 +8,7 @@ EXT_SRC="$REPO_DIR/extensions"
 SKILL_SRC="$REPO_DIR/skills"
 EXT_DEST="$PI_AGENT_DIR/extensions"
 SKILL_DEST="$PI_AGENT_DIR/skills"
-MODE="link"
+MODE="copy"
 
 usage() {
   cat <<'EOF'
@@ -16,8 +16,9 @@ Usage: ./init.sh [--copy]
 
 Install the extensions and skills in this repository into the pi agent dir.
 
-Default: create symlinks, so edits in this repository are picked up directly.
-  --copy   copy the files instead of symlinking them
+Default: copy the files into the pi agent directory.
+  --link   create symlinks instead, so edits in this repository are picked up directly
+  --copy   copy the files (default)
   --help   show this help
 
 Environment:
