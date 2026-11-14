@@ -265,6 +265,19 @@ be in your contact list; the user creates connections on the topology page.
 Files can be any regular file up to 50 MB each; repeat `--file` for multiple
 attachments (max 10 / 100 MB total).
 
+After a successful send, if you have unread incoming messages, `send.sh` also
+prints a per-conversation unread list under `Sent to ...`:
+
+```text
+Sent to user.
+3 unread messages:
+  user: 2
+  Rachel Spencer: 1
+```
+
+This is a reminder only; it does not mark anything read. Use
+`check_msg.sh --unread-only --all` to read and clear the unread messages.
+
 ## Read messages
 
 ```bash

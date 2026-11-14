@@ -365,6 +365,26 @@ def cmd_render_unread() -> None:
     print(f"{count} unread {noun}. Latest from {sender} at {timestamp}.")
 
 
+def cmd_render_unread_list() -> None:
+    """Render the per-conversation unread list returned by POST /agent/messages."""
+    data = read_json()
+    unread = data.get("unread") or {}
+    count = int(unread.get("count") or 0)
+    conversations = unread.get("conversations") or []
+    if count <= 0 or not isinstance(conversations, list):
+        return
+    noun = "message" if count == 1 else "messages"
+    print(f"{count} unread {noun}:")
+    for item in conversations:
+        if not isinstance(item, dict):
+            continue
+        number = int(item.get("count") or 0)
+        if number <= 0:
+            continue
+        name = str(item.get("name") or item.get("target") or "unknown")
+        print(f"  {name}: {number}")
+
+
 def cmd_has_contact(target: str) -> None:
     data = read_json()
     contacts = data.get("contacts") or []
@@ -497,6 +517,8 @@ def main() -> None:
         cmd_make_read_json()
     elif command == "render-unread":
         cmd_render_unread()
+    elif command == "render-unread-list":
+        cmd_render_unread_list()
     elif command == "has-contact" and len(sys.argv) == 3:
         cmd_has_contact(sys.argv[2])
     elif command == "contact-ids":

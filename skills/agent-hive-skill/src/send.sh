@@ -214,3 +214,10 @@ if [[ "$status" -lt 200 || "$status" -ge 300 ]]; then
 fi
 
 printf 'Sent to %s.\n' "$target"
+
+# A successful send also surfaces incoming unread mail so the agent does not
+# forget to drain its inbox before ending the turn.
+unread_list="$(printf '%s' "$response" | python3 "$HIVE_PY" render-unread-list 2>/dev/null || true)"
+if [[ -n "$unread_list" ]]; then
+  printf '%s\n' "$unread_list"
+fi
