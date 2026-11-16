@@ -8,13 +8,16 @@ EXT_SRC="$REPO_DIR/extensions"
 SKILL_SRC="$REPO_DIR/skills"
 EXT_DEST="$PI_AGENT_DIR/extensions"
 SKILL_DEST="$PI_AGENT_DIR/skills"
+MODELS_SRC="$REPO_DIR/models.json"
+MODELS_DEST="$PI_AGENT_DIR/models.json"
 MODE="copy"
 
 usage() {
   cat <<'EOF'
 Usage: ./init.sh [--link|--copy]
 
-Install the extensions and skills in this repository into the pi agent dir.
+Install the extensions and skills in this repository into the pi agent dir,
+then merge the Bailian provider from models.json into the agent's models.json.
 
 Default: copy the files into the pi agent directory.
   --link   create symlinks instead, so edits in this repository are picked up directly
@@ -38,7 +41,7 @@ done
 [[ -d "$EXT_SRC" ]] || { echo "missing directory: $EXT_SRC" >&2; exit 1; }
 [[ -d "$SKILL_SRC" ]] || { echo "missing directory: $SKILL_SRC" >&2; exit 1; }
 
-mkdir -p "$EXT_DEST" "$SKILL_DEST"
+mkdir -p "$PI_AGENT_DIR" "$EXT_DEST" "$SKILL_DEST"
 
 install_item() {
   local src="$1" dest="$2" name="$3"
@@ -76,6 +79,17 @@ for src in "$SKILL_SRC"/*; do
   [[ "$base" == .* ]] && continue
   install_item "$src" "$SKILL_DEST/$base" "$base"
 done
+
+if [[ -f "$MODELS_SRC" ]]; then
+  command -v python3 >/dev/null 2>&1 || {
+    echo "python3 is required to merge models.json" >&2
+    exit 1
+  }
+  python3 "$REPO_DIR/merge_models.py" "$MODELS_SRC" "$MODELS_DEST"
+  if [[ -f "$MODELS_DEST" ]] && grep -q '\$BAILIAN_API_KEY' "$MODELS_DEST" && [[ -z "${BAILIAN_API_KEY:-}" ]]; then
+    echo "note: BAILIAN_API_KEY is not set; export it (or use pi /login) before selecting Bailian models."
+  fi
+fi
 
 echo
 echo "Installed into $PI_AGENT_DIR ($MODE mode)."
