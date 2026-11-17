@@ -17,7 +17,7 @@ usage() {
 Usage: ./init.sh [--link|--copy]
 
 Install the extensions and skills in this repository into the pi agent dir,
-then merge the Bailian provider from models.json into the agent's models.json.
+then copy models.json (if present) into the agent dir.
 
 Default: copy the files into the pi agent directory.
   --link   create symlinks instead, so edits in this repository are picked up directly
@@ -81,12 +81,14 @@ for src in "$SKILL_SRC"/*; do
 done
 
 if [[ -f "$MODELS_SRC" ]]; then
-  command -v python3 >/dev/null 2>&1 || {
-    echo "python3 is required to merge models.json" >&2
-    exit 1
-  }
-  python3 "$REPO_DIR/merge_models.py" "$MODELS_SRC" "$MODELS_DEST"
-  if [[ -f "$MODELS_DEST" ]] && grep -q '\$BAILIAN_API_KEY' "$MODELS_DEST" && [[ -z "${BAILIAN_API_KEY:-}" ]]; then
+  if [[ -f "$MODELS_DEST" ]]; then
+    cp "$MODELS_DEST" "$MODELS_DEST.bak-$(date +%Y%m%d-%H%M%S)"
+    echo "backup   $MODELS_DEST"
+  fi
+  cp "$MODELS_SRC" "$MODELS_DEST"
+  chmod 600 "$MODELS_DEST"
+  echo "copied   models.json -> $MODELS_DEST"
+  if grep -q '\$BAILIAN_API_KEY' "$MODELS_DEST" && [[ -z "${BAILIAN_API_KEY:-}" ]]; then
     echo "note: BAILIAN_API_KEY is not set; export it (or use pi /login) before selecting Bailian models."
   fi
 fi

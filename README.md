@@ -21,9 +21,9 @@ Then start pi and run `/reload` (or restart pi).
 
 ## Models
 
-`models.json` contains only the Bailian provider. `init.sh` merges it into
-`$PI_AGENT_DIR/models.json`; other providers and existing local fields are
-preserved, and the old file is backed up before the atomic write.
+`models.json` contains only the Bailian provider. If present, `init.sh` copies
+it to `$PI_AGENT_DIR/models.json`, replacing the target; an existing file is
+backed up as `models.json.bak-<timestamp>` first.
 
 The API key is read from `$BAILIAN_API_KEY` (environment interpolation), so
 export it or use `pi`'s `/login` before selecting a Bailian model.
