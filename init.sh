@@ -82,8 +82,10 @@ done
 
 if [[ -f "$MODELS_SRC" ]]; then
   if [[ -f "$MODELS_DEST" ]]; then
-    cp "$MODELS_DEST" "$MODELS_DEST.bak-$(date +%Y%m%d-%H%M%S)"
-    echo "backup   $MODELS_DEST"
+    models_backup="$MODELS_DEST.bak-$(date +%Y%m%d-%H%M%S)"
+    cp "$MODELS_DEST" "$models_backup"
+    chmod 600 "$models_backup"
+    echo "backup   $models_backup"
   fi
   cp "$MODELS_SRC" "$MODELS_DEST"
   chmod 600 "$MODELS_DEST"
